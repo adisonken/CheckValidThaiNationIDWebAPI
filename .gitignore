@@ -6,3 +6,7 @@
 /.vs/slnx.sqlite
 /.vs/CheckValidThaiNationIDWebAPI/v16/.suo
 /.vs/CheckNationIDAPI/config/applicationhost.config
+/.vs/CheckNationIDAPI/v16/Server/sqlite3/storage.ide-wal
+/.vs/CheckNationIDAPI/v16/Server/sqlite3/storage.ide-shm
+/.vs/CheckNationIDAPI/v16/Server/sqlite3/storage.ide
+/.vs/CheckNationIDAPI/v16/Server/sqlite3/db.lock
