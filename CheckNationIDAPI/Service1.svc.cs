@@ -69,5 +69,11 @@ namespace CheckNationIDAPI
             }
             return composite;
         }
+        public bool IsValidPassword(string password)
+        {
+            PasswordPolicy policy = new PasswordPolicy();
+            bool t = policy.IsValid(password);
+            return t;
+        }
     }
 }
