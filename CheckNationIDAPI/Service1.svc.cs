@@ -1,5 +1,8 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Configuration;
+using System.Data;
+using System.Data.SqlClient;
 using System.Linq;
 using System.Runtime.Serialization;
 using System.ServiceModel;
@@ -69,11 +72,124 @@ namespace CheckNationIDAPI
             }
             return composite;
         }
+
         public bool IsValidPassword(string password)
         {
             PasswordPolicy policy = new PasswordPolicy();
             bool t = policy.IsValid(password);
             return t;
+        }
+
+        public string UpdateStatus(string user)
+        {
+            string conn = ConfigurationManager.ConnectionStrings["constrk2"].ToString();
+            SqlConnection objsqlconn = new SqlConnection(conn);
+            string sql2 = "";
+            try
+            {
+                objsqlconn.Open();
+                sql2 = string.Format(
+                       "	 Update [K2].[dbo].[UserPolicyPassword] SET [IsWarning] = '0',[IsExpire] = '0' " +
+                       "	 Where [UserName] = '{0}'  "
+                    , user);
+                SqlCommand objcmd2 = new SqlCommand(sql2, objsqlconn);
+                SqlDataAdapter objAdp2 = new SqlDataAdapter(objcmd2);
+                objcmd2.ExecuteNonQuery();
+
+            }
+            catch (Exception ex)
+            {
+
+
+            }
+            finally
+            {
+                objsqlconn.Close();
+            }
+
+            return "OK";
+        }
+
+        public bool IsWarning(string user)
+        {
+            bool chkresult = false;
+            string conn = ConfigurationManager.ConnectionStrings["constrk2"].ToString();
+            SqlConnection objsqlconn = new SqlConnection(conn);
+            string sql2 = "";
+            try
+            {
+                objsqlconn.Open();
+                sql2 = string.Format(
+                       "	 SELECT [IsWarning] FROM [UserPolicyPassword]" +
+                       "	 Where [UserName] = '{0}' AND IsWarning = '1' "
+                    , user);
+                SqlCommand objcmd2 = new SqlCommand(sql2, objsqlconn);
+                SqlDataAdapter objAdp = new SqlDataAdapter(objcmd2);
+                DataTable dt = new DataTable();
+                objAdp.Fill(dt);
+                if (dt.Rows.Count > 0)
+                {
+                    chkresult = true;
+
+                }
+                else
+                {
+                    chkresult = false;
+                }
+
+            }
+            catch (Exception ex)
+            {
+
+
+            }
+            finally
+            {
+                objsqlconn.Close();
+            }
+
+            return chkresult;
+        }
+
+        public bool IsExpire(string user)
+        {
+            bool chkresult = false;
+            string conn = ConfigurationManager.ConnectionStrings["constrk2"].ToString();
+            SqlConnection objsqlconn = new SqlConnection(conn);
+            string sql2 = "";
+            try
+            {
+                objsqlconn.Open();
+                sql2 = string.Format(
+                       "	 SELECT [IsExpire] FROM [UserPolicyPassword]" +
+                       "	 Where [UserName] = '{0} AND IsExpire = '1' "
+                    , user);
+                SqlCommand objcmd2 = new SqlCommand(sql2, objsqlconn);
+                SqlDataAdapter objAdp = new SqlDataAdapter(objcmd2);
+                DataTable dt = new DataTable();
+                objAdp.Fill(dt);
+                if (dt.Rows.Count > 0)
+                {
+                    chkresult = true;
+
+                }
+                else
+                {
+                    chkresult = false;
+                }
+
+            }
+            catch (Exception ex)
+            {
+
+
+            }
+            finally
+            {
+                objsqlconn.Close();
+            }
+
+            return chkresult;
         }
     }
 }

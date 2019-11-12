@@ -26,6 +26,15 @@ namespace CheckNationIDAPI
         [OperationContract]
         bool IsValidPassword(string password);
 
+        [OperationContract]
+        string UpdateStatus(string user);
+
+        [OperationContract]
+        bool IsWarning(string user);
+
+        [OperationContract]
+        bool IsExpire(string user);
+
         // TODO: Add your service operations here
     }
 
@@ -59,7 +68,7 @@ namespace CheckNationIDAPI
         private static int NonAlpha_length = 1;
         private static int Numeric_length = 1;
 
-        public bool IsValid(string Password)
+        public  bool IsValid(string Password)
         {
             if (Password.Length < Minimum_Length)
                 return false;
